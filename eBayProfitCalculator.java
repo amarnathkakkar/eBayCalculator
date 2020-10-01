@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.InputStream;
 
 public class eBayProfitCalculator{
 
@@ -10,6 +11,7 @@ public class eBayProfitCalculator{
 	static double flatPaypalFee;
 	static double percEbayFee;
 	static double percPaypalFee;
+	static Scanner usrInput;
 
 
 	public eBayProfitCalculator() {
@@ -22,6 +24,22 @@ public class eBayProfitCalculator{
 		flatPaypalFee = 0.3;
 		percEbayFee = 0.09*(1+vat);
 		percPaypalFee = 0.029;
+
+		usrInput = new Scanner(System.in);
+	}
+
+	public eBayProfitCalculator(double itemCostUser, double shippingCostUser, double parcelCostUser, InputStream simulatedInput) {
+		itemCost = itemCostUser;
+		shippingCost = shippingCostUser;
+		parcelCost = parcelCostUser;	
+
+		vat = 0.2;
+
+		flatPaypalFee = 0.3;
+		percEbayFee = 0.09*(1+vat);
+		percPaypalFee = 0.029;
+
+		usrInput = new Scanner(simulatedInput);
 	}
 
 
@@ -135,7 +153,7 @@ public class eBayProfitCalculator{
 		
 		System.out.print("priceOfOneGood = ");
 
-		Scanner usrInput = new Scanner(System.in);
+
 		String priceOfOneGoodString = usrInput.nextLine();
 
 		if (isValidDouble(priceOfOneGoodString)) {
