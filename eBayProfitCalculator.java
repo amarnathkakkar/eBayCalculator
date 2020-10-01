@@ -83,7 +83,7 @@ public class eBayProfitCalculator{
 		System.out.println(n + ":  s = " + sellingPrice + ", p = " + profit);
 	}
 
-
+	
 	public static void Loop(boolean bool) {
 		if (bool == true) {
 			Start();
@@ -91,7 +91,7 @@ public class eBayProfitCalculator{
 			Exit();
 		}
 	}
-
+	
 
 	public static boolean isValidDouble(String input) {
 		boolean isValid = false;
@@ -137,58 +137,57 @@ public class eBayProfitCalculator{
 
 		Scanner usrInput = new Scanner(System.in);
 		String priceOfOneGoodString = usrInput.nextLine();
-		boolean isValidDouble = false;
 
 		if (isValidDouble(priceOfOneGoodString)) {
 			priceOfOneGood = Double.parseDouble(priceOfOneGoodString);
-			isValidDouble = true;
-		}
 
 
-		if (isValidDouble && priceOfOneGood == 0) {
+			if (priceOfOneGood == 0) {
 			
-			ArrayList<Integer> numberOfGoodsToCheckArray = populateNumOfGoodsToCheckArray(usrInput);
+				ArrayList<Integer> numberOfGoodsToCheckArray = populateNumOfGoodsToCheckArray(usrInput);
 
 
-			numberOfGoodsToCheckArray.forEach((n) -> {
+				numberOfGoodsToCheckArray.forEach((n) -> {
 
-				double[] sellingPriceAndProfitArray = new double[2];
+					double[] sellingPriceAndProfitArray = new double[2];
 
-				double iteratePriceOfOneGood = itemCost;
+					double iteratePriceOfOneGood = itemCost;
 
-				do {
+					do {
+						
+						sellingPriceAndProfitArray = calcSellingPriceAndProfit(n, iteratePriceOfOneGood);
+
+						iteratePriceOfOneGood += 0.01;
+
+					} while (sellingPriceAndProfitArray[1] < 0);
+
+
+					printSellingAndProfit(n, sellingPriceAndProfitArray[0], sellingPriceAndProfitArray[1]);
+				});
+
+			}
+			else {
+
+				ArrayList<Integer> numberOfGoodsToCheckArray = populateNumOfGoodsToCheckArray(usrInput);
+
+				final double priceOfOneGoodFinal = priceOfOneGood;
+
+
+				numberOfGoodsToCheckArray.forEach((n) -> {
+
+					double[] sellingPriceAndProfitArray = new double[2];
+
+					sellingPriceAndProfitArray = calcSellingPriceAndProfit(n, priceOfOneGoodFinal);
 					
-					sellingPriceAndProfitArray = calcSellingPriceAndProfit(n, iteratePriceOfOneGood);
+					printSellingAndProfit(n, sellingPriceAndProfitArray[0], sellingPriceAndProfitArray[1]);
 
-					iteratePriceOfOneGood += 0.01;
+				});
 
-				} while (sellingPriceAndProfitArray[1] < 0);
-
-
-				printSellingAndProfit(n, sellingPriceAndProfitArray[0], sellingPriceAndProfitArray[1]);
-			});
+			}
 
 		}
-		else if (isValidDouble) {
+		Loop(isValidDouble(priceOfOneGoodString));
 
-			ArrayList<Integer> numberOfGoodsToCheckArray = populateNumOfGoodsToCheckArray(usrInput);
-
-			final double priceOfOneGoodFinal = priceOfOneGood;
-
-
-			numberOfGoodsToCheckArray.forEach((n) -> {
-
-				double[] sellingPriceAndProfitArray = new double[2];
-
-				sellingPriceAndProfitArray = calcSellingPriceAndProfit(n, priceOfOneGoodFinal);
-				
-				printSellingAndProfit(n, sellingPriceAndProfitArray[0], sellingPriceAndProfitArray[1]);
-
-			});
-
-		}
-
-
-		Loop(isValidDouble);
 	}
+
 }
