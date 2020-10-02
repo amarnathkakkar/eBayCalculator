@@ -1,26 +1,22 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.InputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class eBayProfitCalculator{
 
-	static double itemCost;
-	static double shippingCost;
-	static double parcelCost;
-	static double vat;
-	static double flatPaypalFee;
-	static double percEbayFee;
-	static double percPaypalFee;
-	static Scanner usrInput;
+	double itemCost;
+	double shippingCost;
+	double parcelCost;
+	double vat;
+	double flatPaypalFee;
+	double percEbayFee;
+	double percPaypalFee;
+	Scanner usrInput;
 
 
 	public eBayProfitCalculator() {
-		itemCost = 0.40;
-		shippingCost = 0.76;
-		parcelCost = 0.13;
-
-		vat = 0.2;
-
 		flatPaypalFee = 0.3;
 		percEbayFee = 0.09*(1+vat);
 		percPaypalFee = 0.029;
@@ -28,7 +24,7 @@ public class eBayProfitCalculator{
 		usrInput = new Scanner(System.in);
 	}
 
-	public eBayProfitCalculator(double itemCostUser, double shippingCostUser, double parcelCostUser, InputStream simulatedInput) {
+	public eBayProfitCalculator(double itemCostUser, double shippingCostUser, double parcelCostUser, InputStream testInput) {
 		itemCost = itemCostUser;
 		shippingCost = shippingCostUser;
 		parcelCost = parcelCostUser;	
@@ -39,23 +35,64 @@ public class eBayProfitCalculator{
 		percEbayFee = 0.09*(1+vat);
 		percPaypalFee = 0.029;
 
-		usrInput = new Scanner(simulatedInput);
+		usrInput = new Scanner(testInput);
 	}
 
 
 	public static void main(String args[]) {
 		eBayProfitCalculator newCalc = new eBayProfitCalculator();
-		System.out.println("Type anything other than a number to exit.");
-		newCalc.Start();
+		if(newCalc.setVariablesFromFile()) {
+			newCalc.printVariables();
+			System.out.println("Type anything other than a number to exit.");
+			newCalc.Start();
+		}
+	}
+
+	public void printVariables() {
+		System.out.println("itemCost = " + itemCost + " shippingCost = " + shippingCost + " parcelCost = " + parcelCost + " VAT = " + vat*100 + "%");
+	}
+
+	public boolean setVariablesFromFile() {
+		boolean variableSet = false;
+
+		try {
+			File varFile = new File("Variables.txt");
+			Scanner fileScanner = new Scanner(varFile);
+
+			int i = 0;
+			String[] variableArray = new String[4];
+
+			while(fileScanner.hasNextLine()) {
+				variableArray[i] = fileScanner.nextLine();
+				i++;
+			}
+			fileScanner.close();
+
+			itemCost = Double.parseDouble(variableArray[0]);
+			shippingCost = Double.parseDouble(variableArray[1]);
+			parcelCost = Double.parseDouble(variableArray[2]);
+			vat = Double.parseDouble(variableArray[3]);
+
+			variableSet = true;
+
+		} catch (FileNotFoundException e) {
+			System.out.println("File named 'Variables.txt' not found.\n");
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			System.out.println("Please ensure variables in file 'Variables.txt' are real numbers.\n");
+			e.printStackTrace();
+		}
+		
+		return variableSet;
 	}
 
 
-	public static double Round(double input) {
+	public double Round(double input) {
 		return Double.parseDouble(String.format("%.2f",input));
 	}
 
 
-	public static void Exit() {
+	public void Exit() {
 		try {
 			System.out.print("exiting");
             Thread.sleep(200);
@@ -71,7 +108,7 @@ public class eBayProfitCalculator{
 	}
 
 
-	public static ArrayList<Integer> populateNumOfGoodsToCheckArray(Scanner usrInput) {
+	public ArrayList<Integer> populateNumOfGoodsToCheckArray(Scanner usrInput) {
 		ArrayList<Integer> intArray = new ArrayList<Integer>();
 
 		do {
@@ -97,12 +134,12 @@ public class eBayProfitCalculator{
 	}
 
 
-	public static void printSellingAndProfit(int n, double sellingPrice, double profit) {
+	public void printSellingAndProfit(int n, double sellingPrice, double profit) {
 		System.out.println(n + ":  s = " + sellingPrice + ", p = " + profit);
 	}
 
 	
-	public static void Loop(boolean bool) {
+	public void Loop(boolean bool) {
 		if (bool == true) {
 			Start();
 		} else {
@@ -111,7 +148,7 @@ public class eBayProfitCalculator{
 	}
 	
 
-	public static boolean isValidDouble(String input) {
+	public boolean isValidDouble(String input) {
 		boolean isValid = false;
 
 		if (input.matches("-?\\d+(\\.\\d+)?")) {
@@ -122,7 +159,7 @@ public class eBayProfitCalculator{
 	}
 
 
-	public static double[] calcSellingPriceAndProfit(int n, double priceOfOneGood) {
+	public double[] calcSellingPriceAndProfit(int n, double priceOfOneGood) {
 		//sell price of goods = price of a single good * number of goods sold
 		double sellingPrice = Round(priceOfOneGood*n);
 		//cost of goods sold = cost of goods sold + shippingCost + parcelCost + flat paypal fee + %(ebayfee & paypalfee) of selling price
@@ -147,7 +184,7 @@ public class eBayProfitCalculator{
 	}
 
 
-	public static void Start() {
+	public void Start() {
 
 		double priceOfOneGood = 0;
 		
