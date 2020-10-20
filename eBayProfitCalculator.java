@@ -4,6 +4,9 @@ import java.io.InputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 public class eBayProfitCalculator{
 
 	double itemCost;
@@ -59,10 +62,20 @@ public class eBayProfitCalculator{
 			Scanner fileScanner = new Scanner(varFile);
 
 			int i = 0;
-			String[] variableArray = new String[5];
+			String[] variableArray = new String[6];
 
 			while(fileScanner.hasNextLine()) {
-				variableArray[i] = fileScanner.nextLine().replaceAll("[^(\\d+)\\.(\\d+)]",""); //use split string into array
+				String line = fileScanner.nextLine();
+				int equals = line.indexOf("=");
+
+				Pattern pattern = Pattern.compile("= ");
+				Matcher matcher = pattern.matcher(line);
+				if(matcher.find()) {
+				    variableArray[i] = line.substring(equals+2);
+				} else {
+					variableArray[i] = line.substring(equals+1);
+				}
+
 				i++;
 			}
 			fileScanner.close();
@@ -71,20 +84,34 @@ public class eBayProfitCalculator{
 			shippingCost = Double.parseDouble(variableArray[1]);
 			parcelCost = Double.parseDouble(variableArray[2]);
 			vat = Double.parseDouble(variableArray[3]);
-			percEbayFee = (1+vat)*Double.parseDouble(variableArray[4]);
+			//percEbayFee = (1+vat)*Double.parseDouble(variableArray[4]);
 
+			
+			JSONReader json = new JSONReader();
+
+			String category = variableArray[4];
+			String subcategory = variableArray[5];
+
+			double fee = (double) json.getPercent(category, subcategory);
+
+			double feePercentage = (fee/100);
+			percEbayFee = (1+vat)*feePercentage;
+
+			if (percEbayFee<=0) {
+				quitApp("Sub Category not found. Please check spelling.");
+			}
 
 		} catch (FileNotFoundException e) {
-			System.out.println("File named 'Variables.txt' not found.\n");
-			e.printStackTrace();
-			System.exit(1);
+			quitApp("File named 'Variables.txt' not found.\n", e);
 		} catch (NumberFormatException e) {
-			System.out.println("Please ensure variables in file 'Variables.txt' are real numbers.\n");
-			e.printStackTrace();
-			System.exit(1);
+			quitApp("Please ensure variables in file 'Variables.txt' are real numbers.\n", e);
 		}
-		
-		//return variableSet;
+
+	}
+
+
+	public void printVariables() {
+		System.out.println("itemCost = " + itemCost + " shippingCost = " + shippingCost + " parcelCost = " + parcelCost + " VAT = " + vat*100 + "%");
 	}
 
 
@@ -153,6 +180,17 @@ public class eBayProfitCalculator{
 	}
 
 
+	public boolean isValidDouble(String input) {
+		boolean isValid = false;
+
+		if (input.matches("-?\\d+(\\.\\d+)?")) {
+			isValid = true;
+		}
+
+		return isValid;
+	}
+
+
 	public ArrayList<Integer> populateNumOfGoodsToCheckArray(Scanner usrInput) {
 		ArrayList<Integer> intArray = new ArrayList<Integer>();
 
@@ -210,6 +248,11 @@ public class eBayProfitCalculator{
 	}
 
 
+	public double Round(double input) {
+		return Double.parseDouble(String.format("%.2f",input));
+	}
+	
+
 	public void printSellingAndProfit(int n, double sellingPrice, double profit) {
 		System.out.println(n + ":  s = " + sellingPrice + ", p = " + profit);
 	}
@@ -219,34 +262,18 @@ public class eBayProfitCalculator{
 		if (bool == true) {
 			Start();
 		} else {
-			quitApp();
+			quitApp("");
 		}
 	}
-	
-
-	public boolean isValidDouble(String input) {
-		boolean isValid = false;
-
-		if (input.matches("-?\\d+(\\.\\d+)?")) {
-			isValid = true;
-		}
-
-		return isValid;
-	}
 
 
-	public void printVariables() {
-		System.out.println("itemCost = " + itemCost + " shippingCost = " + shippingCost + " parcelCost = " + parcelCost + " VAT = " + vat*100 + "%");
-	}
-
-
-	public double Round(double input) {
-		return Double.parseDouble(String.format("%.2f",input));
-	}
-
-
-	public void quitApp() {
+	public void quitApp(String error, Exception ex) {
 		try {
+			
+			ex.printStackTrace();
+
+			System.out.println(error);
+
 			System.out.print("exiting");
             Thread.sleep(200);
             System.out.print(".");
@@ -255,6 +282,31 @@ public class eBayProfitCalculator{
             Thread.sleep(200);
             System.out.print(".\n");
             Thread.sleep(200);
+
+            System.exit(1);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+	}
+
+
+	public void quitApp(String error) {
+		try {
+
+			System.out.println(error);
+
+			System.out.print("exiting");
+            Thread.sleep(200);
+            System.out.print(".");
+            Thread.sleep(200);
+            System.out.print(".");
+            Thread.sleep(200);
+            System.out.print(".\n");
+            Thread.sleep(200);
+
+            System.exit(1);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

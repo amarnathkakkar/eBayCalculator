@@ -1,0 +1,221 @@
+[
+	{"category": "Antiques",
+	 "percent": 9}
+	{"category": "Art",
+	 "percent": 9}
+	{"category": "Baby",
+	 "subcategory": [
+		{"subcategory": "Bath Toys",
+	 	 "percent":  9},
+		{"subcategory": "Playmats and Jigsaw Mats",
+	 	 "percent": 6}
+	]},
+	{"category": "Books, Comics & Magazines",
+	 "percent": 8}
+	{"category": "Business, Office & Industrial",
+	 "percent": 10}
+	{"category": "Cameras & Photography",
+	 "percent": 8,
+	 "subcategory": [
+		{"subcategory": "Camcorders",
+	 	 "percent":  5},
+		{"subcategory": "Camera Drone Accessories",
+	 	 "percent":  5},
+		{"subcategory": "Digital Cameras",
+	 	 "percent":  5},
+		{"subcategory": "Film Photography",
+	 	 "percent":  5},
+		{"subcategory": "Lenses & Filters",
+	 	 "percent":  5}
+	]},
+	{"category": "Clothing, Shoes & Accessories",
+	 "percent": 10,
+	 "subcategory": [
+		{"subcategory": "Baby Clothes, Shoes & Accessories",
+	 	 "percent":  9}
+	]},
+	{"category": "Coins",
+	 "percent": 9}
+	{"category": "Collectables",
+	 "percent": 9}
+	{"category": "Computers, Tablets & Networking",
+	 "percent": 8,
+	 "subcategory": [
+		{"subcategory": "Desktops & All-In-Ones",
+	 	 "percent":  5},
+		{"subcategory": "Drives, Storage & Blank Media",
+	 	 "percent":  5},
+		{"subcategory": "Enterprise Networking, Servers",
+		 "percent":  5},
+		{"subcategory": "Home Networking & Connectivity",
+		 "percent":  5},
+		{"subcategory": "Tablets & eBook Readers",
+		 "percent":  5},
+		{"subcategory": "Laptops & Netbooks",
+		 "percent":  5},
+		{"subcategory": "Printers, Scanners, & Supplies",
+		 "percent":  5},
+		{"subcategory": "Software",
+		 "percent":  5}
+	]},
+	{"category": "Crafts",
+	 "percent": 11}
+	{"category": "Dolls & Bears",
+	 "percent": 9}
+	{"category": "DVDs, Films & TV",
+	 "percent": 8}
+	{"category": "Event Tickets",
+	 "percent": 11}
+	{"category": "Garden & Patios",
+	 "percent": 9,
+	 "subcategory": [
+		{"subcategory": "Saunas<£250",
+		 "percent": 9},
+		{"subcategory": "Saunas>£250",
+		 "percent": 6},
+		{"subcategory": "Conservatories<£250",
+		 "percent": 9},
+		{"subcategory": "Conservatories>£250",
+		 "percent": 6}
+	]},
+	{"category": "Health & Beauty",
+	 "percent": 9,
+	 "subcategory": [
+		{"subcategory": "Hair Extension & Wigs",
+		 "percent":  10},
+		{"subcategory": "Vape Pens, E-Cigarettes & Accessories",
+		 "percent": 11},
+		{"subcategory": "Vaporizers",
+		 "percent":  11}
+	]},
+	{"category": "Holidays & Travel",
+	 "percent": 6}
+	{"category": "Home, Furniture & DIY",
+	 "percent": 10,
+	 "subcategory": [
+		{"subcategory": "Home, Furniture & DIY<£250",
+		 "percent": 10},
+		{"subcategory": "Home, Furniture & DIY>£250",
+		 "percent": 6},
+		{"subcategory": "Appliances",
+		 "percent":  5},
+		{"subcategory": "DIY Tools",
+		 "percent":  5},
+		{"subcategory": "Kitchen Scales",
+		 "percent":  5},
+		{"subcategory": "Paint Sprayers",
+		 "percent":  5},
+		{"subcategory": "Smart Speakers",
+		 "percent":  5},
+		{"subcategory": "Electrical Socket Adapters & Converters<£250",
+		 "percent": 8},
+		{"subcategory": "Electrical Socket Adapters & Converters>£250",
+		 "percent": 6},
+		{"subcategory": "Power Strips & Surge Protectors<£250",
+		 "percent": 8},
+		{"subcategory": "Power Strips & Surge Protectors>£250",
+		 "percent": 6},
+		{"subcategory": "Furniture<£250",
+	 	 "percent": 9},
+	 	{"subcategory": "Furniture>£250",
+	 	 "percent": 6},
+		{"subcategory": "Bath<£250",
+		 "percent": 9},
+		{"subcategory": "Bath>£250",
+		 "percent": 6},
+		{"subcategory": "Other Home Plumbing & Fixtures<£250",
+		 "percent": 9},
+		{"subcategory": "Other Home Plumbing & Fixtures>£250",
+		 "percent": 6},
+		{"subcategory": "Shower Pumps<£250",
+		 "percent": 9},
+		{"subcategory": "Shower Pumps>£250",
+		 "percent": 6},
+		{"subcategory": "Frying & Grill Pans<£250",
+		 "percent": 9},
+		{"subcategory": "Frying & Grill Pans>£250",
+		 "percent": 6}
+	]},
+	{"category": "Jewellery & Watches",
+	 "percent": 11,
+	 "subcategory": [
+		{"subcategory": "Watches",
+		 "percent":  10},
+		{"subcategory": "Bracelets",
+		 "percent":  10}
+	]},
+	{"category": "Mobile Phones & Communication",
+	 "percent": 8,
+	 "subcategory": [
+		{"subcategory": "Home Phones & Accessories",
+		 "percent":  5},
+		{"subcategory": "Mobile & Smart Phones",
+		 "percent":  5},
+		{"subcategory": "PDAs",
+		 "percent":  5}
+	]},	
+	{"category": "Music",
+	 "percent": 8}
+	{"category": "Musical Instrument",
+	 "percent": 9}
+	{"category": "Pet Supplies",
+	 "percent": 11}
+	{"category": "Pottery, Porcelain & Glass",
+	 "percent": 9}
+	{"category": "Sound & Vision",
+	 "percent": 8,
+	 "subcategory": [
+		{"subcategory": "DVD, Blu-ray & Home Cinema",
+		 "percent":  5},
+		{"subcategory": "Headphones",
+		 "percent":  5},
+		{"subcategory": "Home Audio & HiFi Separates",
+		 "percent":  5},
+		{"subcategory": "iPods & MP3 Players",
+		 "percent":  5},
+		{"subcategory": "Televisions",
+		 "percent":  5},
+		{"subcategory": "TV Reception & Set-Top Boxes",
+		 "percent":  5}
+	]},
+	{"category": "Sporting Goods",
+	 "percent": 9}
+	{"category": "Sports Memorabilia",
+	 "percent": 9}
+	{"category": "Stamps",
+	 "percent": 9}
+	{"category": "Toys & Games",
+	 "percent": 9,
+	 "subcategory": [
+		{"subcategory": "Tents<£250",
+		 "percent": 9},
+		{"subcategory": "Tents>£250",
+		 "percent": 6}
+	]},
+	{"category": "Vehicle Parts & Accessories",
+	 "percent": 7,
+	 "subcategory": [
+		{"subcategory": "Tyres",
+		 "percent":  6},
+		{"subcategory": "Tyres & Tubes",
+		 "percent":  6},
+		{"subcategory": "GPS & Sat Nav",
+		 "percent":  5},
+		{"subcategory": "Power Tools & Equipment",
+		 "percent": 5}
+	]}, 
+	{"category": "Video Games & Consoles",
+	 "percent": 8,
+	 "subcategory":[
+		{"subcategory": "Consoles",
+		 "percent":  5}
+	]},
+	{"category": "Wholesale & Jon Lots",
+	 "percent": 11}
+	{"category": "Everything Else",
+	 "percent": 11,
+	 "subcategory": [
+		{"subcategory": "Memorials & Funerals",
+		 "percent":  10}
+	]}
+]

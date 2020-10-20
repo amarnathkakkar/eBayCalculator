@@ -1,5 +1,6 @@
-itemCost = 2.00
-shippingCost = 3.10
+itemCost = 1.50
+shippingCost = 1.40
 parcelCost = 0.125
 vat = 0.20
-percEbayFee = 0.10
+category = Home, Furniture & DIY
+subcategory = 
