@@ -7,15 +7,34 @@ import java.io.FileNotFoundException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+import java.util.Properties;
+import java.io.ByteArrayInputStream;
+
+import java.io.OutputStream;
+import javax.swing.JTextArea;
+import java.io.PrintStream;
+
 public class eBayProfitCalculator{
 
 	double itemCost;
 	double shippingCost;
 	double parcelCost;
 	double vat;
-	double flatPaypalFee;
+	double flatPaypalFee = 0.3;
+	double percPaypalFee = 0.029;
 	double percEbayFee;
-	double percPaypalFee;
+
+	boolean isValidInput;
+
+
+	boolean firstLoop = false;
+	String itemCostString;
+	String shippingCostString;
+	String parcelCostString;
+	String vatString;
+	String category;
+	String subCategory;
+
 	Scanner usrInput;
 
 
@@ -26,36 +45,41 @@ public class eBayProfitCalculator{
 
 		vat = 0.2;
 
-		flatPaypalFee = 0.3;
 		percEbayFee = 0.09*(1+vat);
-		percPaypalFee = 0.029;
 
 		usrInput = new Scanner(testInput);
 	}
 
 
+	public eBayProfitCalculator(String itemCost, String shippingString, String parcelString, String vat, String cat, String subCat) {
+		itemCostString = itemCost;
+		shippingCostString = shippingString;
+		parcelCostString = parcelString;
+
+		vatString = vat;
+
+		category = cat;
+		subCategory = subCat;
+
+	}
+
+
 
 	public eBayProfitCalculator() {
-		flatPaypalFee = 0.3;
-		percPaypalFee = 0.029;
-
-		usrInput = new Scanner(System.in);
+		
 	}
 
 
 	public static void main(String args[]) {
 
 		eBayProfitCalculator newCalc = new eBayProfitCalculator();
-
-		newCalc.setVariablesFromFile();
-		newCalc.printVariables();
-		System.out.println("Type anything other than a number to exit.");
+		newCalc.getVariablesFromFile();
 		newCalc.Start();
 		
 	}
 
 
-	public void setVariablesFromFile() {
+	public void getVariablesFromFile() {
 
 		try {
 			File varFile = new File("Variables.txt");	
@@ -80,46 +104,119 @@ public class eBayProfitCalculator{
 			}
 			fileScanner.close();
 
-			itemCost = Double.parseDouble(variableArray[0]);
-			shippingCost = Double.parseDouble(variableArray[1]);
-			parcelCost = Double.parseDouble(variableArray[2]);
-			vat = Double.parseDouble(variableArray[3]);
+			itemCostString = variableArray[0];
+			shippingCostString = variableArray[1];
+			parcelCostString = variableArray[2];
+			vatString = variableArray[3];
 			//percEbayFee = (1+vat)*Double.parseDouble(variableArray[4]);
 
-			
-			JSONReader json = new JSONReader();
 
-			String category = variableArray[4];
-			String subcategory = variableArray[5];
+			category = variableArray[4];
+			subCategory = variableArray[5];
 
-			double fee = (double) json.getPercent(category, subcategory);
-
-			double feePercentage = (fee/100);
-			percEbayFee = (1+vat)*feePercentage;
-
-			if (percEbayFee<=0) {
-				quitApp("Sub Category not found. Please check spelling.");
-			}
 
 		} catch (FileNotFoundException e) {
-			quitApp("File named 'Variables.txt' not found.\n", e);
-		} catch (NumberFormatException e) {
-			quitApp("Please ensure variables in file 'Variables.txt' are real numbers.\n", e);
-		}
+			quitApp("File named 'Variables.txt' not found.", e);
+		} 
 
 	}
 
 
 	public void printVariables() {
-		System.out.println("itemCost = " + itemCost + " shippingCost = " + shippingCost + " parcelCost = " + parcelCost + " VAT = " + vat*100 + "%");
+		System.out.println("itemCost = " + itemCost + " shippingCost = " + shippingCost + " parcelCost = " + parcelCost + " VAT = " + vat*100 + "%" + " eBayFee = " + Round(100*percEbayFee/(1+vat)) + "%");
 	}
 
 
+	public String getVariables() {
+		return "itemCost = " + itemCost + " shippingCost = " + shippingCost + " parcelCost = " + parcelCost + " VAT = " + vat*100 + "%" + " eBayFee = " + Round(100*percEbayFee/(1+vat)) + "%";
+	}
+
+
+	public void checkVariables() {
+		try {
+			itemCost = Double.parseDouble(itemCostString);
+			shippingCost = Double.parseDouble(shippingCostString);
+			parcelCost = Double.parseDouble(parcelCostString);
+			vat = Double.parseDouble(vatString);
+			//percEbayFee = (1+vat)*Double.parseDouble(variableArray[4]);
+
+			
+			JSONReader json = new JSONReader();
+
+			double fee = (double) json.getFee(category, subCategory);
+
+			if (fee==-1) {
+				quitApp("Category or Sub Category not found. Please check spelling.");
+			} else {
+				double feePercentage = (fee/100);
+				percEbayFee = (1+vat)*feePercentage;
+			}
+
+		} catch (NumberFormatException e) {
+			quitApp("Please ensure variables in file 'Variables.txt' are real numbers.", e);
+		}
+	}
+
+
+	/*
+	public void printVariables(String usrItemCost, String usrShippingCost, String usrParcelCost, String usrVAT, String usrCat, String usrSubCat) {
+		System.out.println("itemCost = " + itemCost + " shippingCost = " + shippingCost + " parcelCost = " + parcelCost + " VAT = " + vat*100 + "%" + " eBayFee = " + Round(100*percEbayFee/(1+vat)) + "%");
+	}
+	*/
+	
+	public void setVariables(String usrItemCost, String usrShippingCost, String usrParcelCost, String usrVAT, String usrCat, String usrSubCat) {
+		try {
+			itemCost = Double.parseDouble(usrItemCost);
+			shippingCost = Double.parseDouble(usrShippingCost);
+			parcelCost = Double.parseDouble(usrParcelCost);
+			vat = Double.parseDouble(usrVAT);
+			//percEbayFee = (1+vat)*Double.parseDouble(variableArray[4]);
+
+			
+			JSONReader json = new JSONReader();
+
+			double fee = (double) json.getFee(usrCat, usrSubCat);
+
+			if (fee==-1) {
+				quitApp("Category or Sub Category not found. Please check spelling.");
+			} else {
+				double feePercentage = (fee/100);
+				percEbayFee = (1+vat)*feePercentage;
+			}
+
+		} catch (NumberFormatException e) {
+			quitApp("Please ensure variables in file 'Variables.txt' are real numbers.", e);
+		}
+	}
+
+
+	public void setInputStream(String input) {
+		InputStream inputStream = new ByteArrayInputStream(input.getBytes());
+		usrInput = new Scanner(inputStream);
+	}
+
+
+	public void setOutputStream(JTextArea textArea) {
+		
+		PrintStream printStream = new PrintStream(new swingOutputStream(textArea));
+
+		System.setOut(printStream);
+		System.setErr(printStream);
+	}
+	
+
 	public void Start() {
+
+		if (firstLoop == false) {
+			checkVariables();
+			printVariables();
+			System.out.println("Type anything other than a number to exit.");
+			firstLoop = true;
+		}
+		
 		
 		System.out.print("priceOfOneGood = ");
 		String priceOfOneGoodString = usrInput.nextLine();
-		boolean isValidInput = true;
 
 
 		double priceOfOneGood = 0;
@@ -180,6 +277,65 @@ public class eBayProfitCalculator{
 	}
 
 
+	public void startWithSwing() {
+		
+		String priceOfOneGoodString = usrInput.nextLine();
+
+
+		double priceOfOneGood = 0;
+
+
+		isValidInput = isValidDouble(priceOfOneGoodString);
+
+		
+		if(isValidInput) {
+			priceOfOneGood = Double.parseDouble(priceOfOneGoodString);
+
+			if (priceOfOneGood == 0) {
+				
+				ArrayList<Integer> numberOfGoodsToCheckArray = populateNumOfGoodsToCheckArray(usrInput);
+
+
+				numberOfGoodsToCheckArray.forEach((n) -> {
+
+					double[] sellingPriceAndProfitArray = new double[2];
+
+					double iteratePriceOfOneGood = itemCost;
+
+					do {
+						
+						sellingPriceAndProfitArray = calcSellingPriceAndProfit(n, iteratePriceOfOneGood);
+
+						iteratePriceOfOneGood += 0.01;
+
+					} while (sellingPriceAndProfitArray[1] < 0);
+
+
+					printSellingAndProfit(n, sellingPriceAndProfitArray[0], sellingPriceAndProfitArray[1]);
+				});
+
+			}
+			else {
+				ArrayList<Integer> numberOfGoodsToCheckArray = populateNumOfGoodsToCheckArray(usrInput);
+
+				final double priceOfOneGoodFinal = priceOfOneGood;
+
+
+				numberOfGoodsToCheckArray.forEach((n) -> {
+
+					double[] sellingPriceAndProfitArray = new double[2];
+
+					sellingPriceAndProfitArray = calcSellingPriceAndProfit(n, priceOfOneGoodFinal);
+					
+					printSellingAndProfit(n, sellingPriceAndProfitArray[0], sellingPriceAndProfitArray[1]);
+
+				});
+
+			}
+		}
+	}
+
+
 	public boolean isValidDouble(String input) {
 		boolean isValid = false;
 
@@ -196,7 +352,7 @@ public class eBayProfitCalculator{
 
 		do {
 			//System.out.println("Leave empty or type an integer greater than 0.");
-			System.out.print("numberOfGoods = ");
+			//System.out.print("numberOfGoods = ");
 			String numberOfGoodsString = usrInput.nextLine();
 
 			if (isValidDouble(numberOfGoodsString)) {
@@ -262,40 +418,26 @@ public class eBayProfitCalculator{
 		if (bool == true) {
 			Start();
 		} else {
-			quitApp("");
+			quitApp();
 		}
 	}
 
 
 	public void quitApp(String error, Exception ex) {
-		try {
-			
-			ex.printStackTrace();
-
-			System.out.println(error);
-
-			System.out.print("exiting");
-            Thread.sleep(200);
-            System.out.print(".");
-            Thread.sleep(200);
-            System.out.print(".");
-            Thread.sleep(200);
-            System.out.print(".\n");
-            Thread.sleep(200);
-
-            System.exit(1);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+		ex.printStackTrace();
+		System.out.println(error);
+        System.exit(1);
 	}
 
 
 	public void quitApp(String error) {
+		System.out.println("Error: " + error);
+        System.exit(1);
+	}
+
+
+	public void quitApp() {
 		try {
-
-			System.out.println(error);
-
 			System.out.print("exiting");
             Thread.sleep(200);
             System.out.print(".");

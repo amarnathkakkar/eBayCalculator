@@ -1,6 +1,6 @@
-itemCost = 1.50
-shippingCost = 1.40
-parcelCost = 0.125
+itemCost = 0.50
+shippingCost = 3.10
+parcelCost = 0.12
 vat = 0.20
-category = Home, Furniture & DIY
-subcategory = 
+category = Toys & Games
+subcategory =
