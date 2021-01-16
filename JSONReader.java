@@ -9,6 +9,9 @@ import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 
+import java.io.InputStreamReader;
+import java.io.InputStream;
+
 
 
 
@@ -16,11 +19,38 @@ public class JSONReader {
 
 
 
+	public JSONArray getArray(InputStream inptStrm) {
+
+		try {
+
+			JSONParser jsonParser = new JSONParser();
+
+			Object jsonObject = jsonParser.parse( new InputStreamReader(inptStrm, "UTF-8"));
+
+			JSONArray jsonArray = (JSONArray) jsonObject;
+
+			return jsonArray;
+
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return null;
+
+
+	}
+
+
 	public long getFee(String cat, String subCat) {
 
 		JSONObject returnObject = null;
+		
 
-		JSONArray categoryList = getJSONArray("finalvaluefees.json");;
+		//getJSONArray( new InputStreamReader(JSONReader.class.getResourceAsStream("finalvaluefees.json"), "UTF-8"));
+
+		JSONArray categoryList = getArray(
+			JSONReader.class.getResourceAsStream("finalvaluefees.json")
+			);
 
 
 		for (int i=0; i<categoryList.size(); i++) {
@@ -68,7 +98,10 @@ public class JSONReader {
 
 		ArrayList<String> catList = new ArrayList<String>();
 
-		JSONArray categoryJSONArray = getJSONArray("finalvaluefees.json");
+
+		JSONArray categoryJSONArray = getArray(
+			JSONReader.class.getResourceAsStream("finalvaluefees.json")
+			);
 
 
 		for(int i = 0; i < categoryJSONArray.size(); i++){
@@ -88,7 +121,9 @@ public class JSONReader {
 		ArrayList<String> subCatList = new ArrayList<String>();
 		subCatList.add("");
 
-		JSONArray categoryJSONArray = getJSONArray("finalvaluefees.json");
+		JSONArray categoryJSONArray = getArray(
+			JSONReader.class.getResourceAsStream("finalvaluefees.json")
+			);
 
 		for(int i=0; i<categoryJSONArray.size(); i++){
 
@@ -113,7 +148,7 @@ public class JSONReader {
 	}
 
 
-
+/*
 	public JSONArray getJSONArray(String fileName) {
 
 		try (FileReader reader = new FileReader(fileName)) {
@@ -130,7 +165,7 @@ public class JSONReader {
 		}
 		return null;
 	}
-
+*/
 
 	/*
 	public static void main(String args[]) {

@@ -390,9 +390,11 @@ public class eBayProfitCalculator{
 
 		giveGovVAT = Round(sellingPrice*(vat/(1+vat)));
 
-		profit = Math.min(
-				Round(sellingPrice+claimBackVAT-costOfGoods-giveGovVAT), Round(sellingPrice-costOfGoods)
-		);
+		profit = //Math.min(
+				//Round(sellingPrice+claimBackVAT-costOfGoods-giveGovVAT), 
+			Round(sellingPrice-costOfGoods)
+		//);
+			;
 
 
 		double[] doubleArray = new double[2];
